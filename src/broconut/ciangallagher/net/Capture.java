@@ -9,8 +9,8 @@ import java.awt.*;
 class Capture extends JFrame {
 
     // Components
-    public JDialog frame;
-    public Dimension dimension;
+    private JDialog frame;
+    private Dimension dimension;
 
     public Capture() {
 
@@ -19,10 +19,8 @@ class Capture extends JFrame {
     }
 
     public void SelectArea () {
-
         EventQueue.invokeLater(new Runnable () {
             public void run () {
-
                 frame = new JDialog();
                 frame.setUndecorated(true);
                 frame.getContentPane().setBackground(Color.GRAY);
@@ -34,7 +32,10 @@ class Capture extends JFrame {
 
             }
         });
+    }
 
+    public JDialog getOwner () {
+        return this.frame;
     }
 
 }

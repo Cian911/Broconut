@@ -19,6 +19,7 @@ class DrawSquare extends JPanel implements MouseListener, MouseMotionListener {
     public BufferedImage bufferedImage;
     public BufferedImage captured;
     public Point start, end, currentPoint;
+    public Process process = new Process();
 
     // Variables
     public String capturedImage;
@@ -92,6 +93,7 @@ class DrawSquare extends JPanel implements MouseListener, MouseMotionListener {
         frame.dispose();
         frame.validate();
         frame.repaint();
+        process.SaveImage();
     }
 
     @Override

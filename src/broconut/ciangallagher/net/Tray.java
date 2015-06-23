@@ -10,9 +10,9 @@ import java.awt.event.ActionListener;
 class Tray {
 
     public TrayIcon trayIcon = null;
+    public Capture capture = new Capture();
 
     public Tray () {
-
         if (SystemTray.isSupported()) {
             // get the tray instance
             SystemTray tray = SystemTray.getSystemTray();
@@ -22,14 +22,24 @@ class Tray {
             ActionListener listener = new ActionListener() {
                public void actionPerformed (ActionEvent e) {
                    // execute action to be performed
+                   capture.SelectArea();
                }
             };
 
             // create menu
             PopupMenu popup = new PopupMenu();
-            MenuItem defaultItem  = new MenuItem();
+            MenuItem defaultItem  = new MenuItem("Capture");
             defaultItem.addActionListener(listener);
             popup.add(defaultItem);
+
+            // create close button
+            MenuItem close = new MenuItem("Close");
+            close.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
+            });
+            popup.add(close);
 
             // add more items...
             trayIcon = new TrayIcon(image, "Broconut", popup);
@@ -44,9 +54,9 @@ class Tray {
             } catch (AWTException e) {e.printStackTrace();}
         } else {
             // disable tray option
+            // TODO: Load error dialog
             System.out.println("System Tray is not supported!");
             return;
         }
     }
-
 }

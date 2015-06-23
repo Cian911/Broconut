@@ -9,9 +9,6 @@ class Main {
 
         Tray tray = new Tray();
 
-        Capture capture = new Capture();
-        //capture.SelectArea();
-
     }
 
 }
