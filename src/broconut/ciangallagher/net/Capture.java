@@ -10,12 +10,17 @@ class Capture extends JFrame {
 
     // Components
     private JDialog frame;
-    private Dimension dimension;
+    private int width, height;
 
     public Capture() {
-
-        dimension = Toolkit.getDefaultToolkit().getScreenSize();
-
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+        for(GraphicsDevice curGs : gs)
+        {
+            DisplayMode dm = curGs.getDisplayMode();
+            width += dm.getWidth();
+            height += dm.getHeight();
+        }
     }
 
     public void SelectArea () {
@@ -26,10 +31,9 @@ class Capture extends JFrame {
                 frame.getContentPane().setBackground(Color.GRAY);
                 frame.setOpacity(0.01f);
                 frame.setLocation(0,0);
-                frame.setSize(dimension);
+                frame.setSize(width, height);
                 frame.setVisible(true);
                 frame.getContentPane().add(new DrawSquare(frame));
-
             }
         });
     }

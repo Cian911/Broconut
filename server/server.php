@@ -6,5 +6,5 @@ if (isset($_FILES['imagedata'])) {
     fclose($open);
     move_uploaded_file($_FILES['imagedata']['tmp_name'], $file);
 
-    echo "http://broconut.com/" . $file;
+    echo "http://broconut.com/app/" . $file;
 }

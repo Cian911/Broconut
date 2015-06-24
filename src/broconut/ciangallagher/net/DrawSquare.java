@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Created by Cian on 19/06/2015.
@@ -93,7 +94,10 @@ class DrawSquare extends JPanel implements MouseListener, MouseMotionListener {
         frame.dispose();
         frame.validate();
         frame.repaint();
-        process.SaveImage();
+
+        try {
+            process.SaveImage(this.rectangle);
+        } catch (Exception a) {a.printStackTrace();}
     }
 
     @Override
