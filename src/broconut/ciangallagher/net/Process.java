@@ -13,13 +13,17 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.SecureRandom;
 import java.util.Properties;
 
 /**
@@ -34,7 +38,7 @@ class Process {
 
     // Local Variables
     private String localPath;
-    private String url;
+    private String url = "http://broconut.com/app/server.php";
     private String resURL;
     private String postParam = "imagedata";
 
@@ -80,8 +84,22 @@ class Process {
     }
 
     // TODO: Save image locally
-    public void SaveImage () {
-        System.out.println("Image Saved.");
+    public void SaveImage (Rectangle rectangle) throws Exception {
+        BufferedImage image = new Robot().createScreenCapture(rectangle);
+
+        try {
+            File file = File.createTempFile(generateString(),".png");
+            ImageIO.write(image, "png", file);
+            UploadImage(file);
+
+            // delete temp file when program exits
+            file.deleteOnExit();
+        } catch(IOException e) {e.printStackTrace();}
+    }
+
+    public String generateString () {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
     }
 
     public void UploadImage (File file) throws Exception {
