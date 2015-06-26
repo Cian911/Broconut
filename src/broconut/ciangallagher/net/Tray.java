@@ -1,13 +1,19 @@
 package broconut.ciangallagher.net;
 
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Cian on 19/06/2015.
  */
-class Tray {
+class Tray implements NativeKeyListener {
 
     public TrayIcon trayIcon = null;
     public Capture capture = new Capture();
@@ -26,7 +32,7 @@ class Tray {
                }
             };
 
-            // create menu
+            /* create menu */
             PopupMenu popup = new PopupMenu();
             MenuItem defaultItem  = new MenuItem("Capture");
             defaultItem.addActionListener(listener);
@@ -45,7 +51,20 @@ class Tray {
             trayIcon = new TrayIcon(image, "Broconut", popup);
             trayIcon.setImageAutoSize(true);
             trayIcon.addActionListener(listener);
-            // add tray image..
+
+            // turn off the fucking logging..
+            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+            logger.setLevel(Level.OFF);
+
+            try {
+                GlobalScreen.registerNativeHook();
+            }
+            catch (NativeHookException ex) {
+                System.err.println("There was a problem registering the native hook.");
+                System.err.println(ex.getMessage());
+            }
+
+            GlobalScreen.addNativeKeyListener(this);
 
             try {
 
@@ -55,8 +74,26 @@ class Tray {
         } else {
             // disable tray option
             // TODO: Load error dialog
-            System.out.println("System Tray is not supported!");
+            System.err.println("System Tray is not supported!");
             return;
         }
     }
+
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent e) {
+        if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
+            try {
+                GlobalScreen.unregisterNativeHook();
+            } catch (NativeHookException a) {a.printStackTrace();}
+        }
+        if (e.getKeyCode() == NativeKeyEvent.VC_ALT_R) {
+            capture.SelectArea();
+        }
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent e) {}
+
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {}
 }
