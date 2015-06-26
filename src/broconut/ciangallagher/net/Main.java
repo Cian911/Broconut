@@ -10,5 +10,4 @@ class Main {
         Tray tray = new Tray();
 
     }
-
 }

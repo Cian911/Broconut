@@ -17,6 +17,7 @@ class Capture extends JFrame {
         GraphicsDevice[] gs = ge.getScreenDevices();
         for(GraphicsDevice curGs : gs)
         {
+            // foreach display device, increase width & height
             DisplayMode dm = curGs.getDisplayMode();
             width += dm.getWidth();
             height += dm.getHeight();
