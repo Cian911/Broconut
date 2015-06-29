@@ -5,6 +5,7 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.logging.Level;
@@ -19,6 +20,11 @@ class Tray implements NativeKeyListener {
     public Capture capture = new Capture();
 
     public Tray () {
+        // set the look and feel of the window
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception w) {w.printStackTrace();}
+
         if (SystemTray.isSupported()) {
             // get the tray instance
             SystemTray tray = SystemTray.getSystemTray();
@@ -37,6 +43,14 @@ class Tray implements NativeKeyListener {
             MenuItem defaultItem  = new MenuItem("Capture");
             defaultItem.addActionListener(listener);
             popup.add(defaultItem);
+
+            MenuItem settings = new MenuItem("Settings");
+            settings.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    showSettings();
+                }
+            });
+            popup.add(settings);
 
             // create close button
             MenuItem close = new MenuItem("Close");
@@ -77,6 +91,10 @@ class Tray implements NativeKeyListener {
             System.err.println("System Tray is not supported!");
             return;
         }
+    }
+
+    public void showSettings () {
+        TraySettings settings = new TraySettings();
     }
 
     @Override
