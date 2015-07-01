@@ -1,6 +1,9 @@
 # Broconut
 Completely customizable Java application that allows you to screen cap and upload to a server of your choosing.
 
+Requirement:
+ - Java Runtime Enviroment 7+
+
 Recent features added:
 
  - Multi screen support
